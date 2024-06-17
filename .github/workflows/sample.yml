@@ -1,4 +1,3 @@
-# Simple workflow for reference
 name: Deploy static content to Pages
 
 on:
@@ -8,6 +7,7 @@ on:
   pull_request:
     branches:
       - main
+
 jobs:
   install_dependencies:
     runs-on: ubuntu-latest
@@ -20,19 +20,21 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
       
-      - name: list Directory
+      - name: List Directory
         working-directory: scripts 
         run: ls
       
-      - name: dependency install
+      - name: Dependency install
         working-directory: "source code/t3-frontend"
-          
         run: |
-            yarn install
-            yarn build
+          yarn install
+          yarn build
 
-      - uses: actions/upload-artifact@v4
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
         with:
           name: subash-artifact
-          path: /tmp/
-        
+          path: "source code/t3-frontend/build"  # Change this to the directory you want to upload
+          if-no-files-found: warn
+          compression-level: 6
+          overwrite: false
