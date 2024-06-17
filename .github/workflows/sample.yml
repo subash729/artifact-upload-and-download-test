@@ -9,7 +9,7 @@ on:
       - main
 
 jobs:
-  install_dependencies:
+  install_and_build:
     runs-on: ubuntu-latest
 
     strategy:
@@ -34,7 +34,30 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: subash-artifact
-          path: "source code/t3-frontend/dist"  # Change this to the directory you want to upload
+          path: "source code/t3-frontend/build"
           if-no-files-found: warn
           compression-level: 6
           overwrite: false
+
+  download_artifact:
+    runs-on: self-hosted
+    needs: [install_and_build]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: subash-artifact
+          path: ./downloaded-artifact
+
+      - name: List downloaded artifact
+        run: ls ./downloaded-artifact
+
+      - name: Create target directory
+        run: |
+            mkdir -p $HOME/Artifacts
+            mv ./downloaded-artifact/* $HOME/Artifacts
+            ls -al $HOME/Artifacts
