@@ -11,6 +11,11 @@ on:
 jobs:
   install_dependencies:
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+    
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -19,8 +24,14 @@ jobs:
         working-directory: scripts 
         run: ls
       
-      - name: Install dependencies
-        working-directory: scripts 
+      - name: dependency install
+        working-directory: "source code/t3-frontend"
+          
         run: |
-            chmod +x dependency-install.sh
-            ./dependency-install.sh
+            yarn install
+            yarn build
+            
+      - uses: actions/upload-artifact@v4
+        with:
+          name: subash-artifact
+        
