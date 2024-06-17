@@ -34,7 +34,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: subash-artifact
-          path: "source code/t3-frontend/build"  # Change this to the directory you want to upload
+          path: "source code/t3-frontend/dist"  # Change this to the directory you want to upload
           if-no-files-found: warn
           compression-level: 6
           overwrite: false
